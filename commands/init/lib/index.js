@@ -237,6 +237,7 @@ class InitCommand extends Command {
       ignore: npmInfo.ignore || ['public/**']
     })
     log.verbose(fileList, localPath)
+    log.verbose(npmInfo, baseInfo)
     return new Promise((resolve, reject) => {
       Promise.all(fileList.map(file => {
         const filePath = path.join(destination, file)
