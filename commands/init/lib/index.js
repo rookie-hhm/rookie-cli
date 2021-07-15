@@ -245,7 +245,7 @@ class InitCommand extends Command {
             if (err) {
               fileReject(err)
             } else {
-              // 写入文件
+              // 写入文件信息
               fs.writeFileSync(filePath, result)
               fileResolve()
             }
