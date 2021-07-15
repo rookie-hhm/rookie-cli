@@ -1,6 +1,6 @@
 {
   "name": "@rookie-cli/child-process",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "> TODO: description",
   "author": "hhm-lxb <3176152005@qq.com>",
   "homepage": "https://github.com/rookie-hhm/rookie-cli#readme",
@@ -26,6 +26,5 @@
   "bugs": {
     "url": "https://github.com/rookie-hhm/rookie-cli/issues"
   },
-  "dependencies": {},
   "gitHead": "d9efd210cf14f4407c202fc71a1c7d74eb3cef42"
 }

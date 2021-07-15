@@ -1,6 +1,6 @@
 {
   "name": "@rookie-cli/init",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "> TODO: description",
   "author": "hhm-lxb <3176152005@qq.com>",
   "homepage": "https://github.com/rookie-hhm/rookie-cli#readme",
@@ -27,7 +27,7 @@
     "url": "https://github.com/rookie-hhm/rookie-cli/issues"
   },
   "dependencies": {
-    "@rookie-cli/child-process": "^1.1.4",
+    "@rookie-cli/child-process": "^1.1.5",
     "@rookie-cli/command": "^1.1.1",
     "@rookie-cli/log": "^1.1.1",
     "@rookie-cli/package": "^1.1.1",
