@@ -1,0 +1,26 @@
+{
+  "name": "@rookie-cli/npm-info",
+  "version": "1.0.2",
+  "description": "> TODO: description",
+  "author": "hhm-lxb <3176152005@qq.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "url-join": "^4.0.1"
+  }
+}

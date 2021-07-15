@@ -1,0 +1,37 @@
+{
+  "name": "@rookie-cli/package",
+  "version": "1.0.4",
+  "description": "npm package model",
+  "author": "hhm-lxb <3176152005@qq.com>",
+  "homepage": "https://github.com/rookie-hhm/rookie-cli#readme",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rookie-hhm/rookie-cli.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "@rookie-cli/npm-info": "file:../../lib/npm-info",
+    "@rookie-cli/shared-utils": "file:../../lib/shared-utils",
+    "fs-extra": "^10.0.0",
+    "npminstall": "^4.11.0",
+    "path-exists": "^4.0.0",
+    "pkg-dir": "^5.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/rookie-hhm/rookie-cli/issues"
+  }
+}
