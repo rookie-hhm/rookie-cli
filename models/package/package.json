@@ -24,8 +24,8 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
-    "@rookie-cli/npm-info": "file:../../lib/npm-info",
-    "@rookie-cli/shared-utils": "file:../../lib/shared-utils",
+    "@rookie-cli/npm-info": "^1.1.0",
+    "@rookie-cli/shared-utils": "^1.1.0",
     "fs-extra": "^10.0.0",
     "npminstall": "^4.11.0",
     "path-exists": "^4.0.0",
@@ -33,5 +33,6 @@
   },
   "bugs": {
     "url": "https://github.com/rookie-hhm/rookie-cli/issues"
-  }
+  },
+  "gitHead": "348e3106607dd2796a44e5aaf4d6eb2b4d04322a"
 }

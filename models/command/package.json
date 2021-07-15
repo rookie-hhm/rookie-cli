@@ -27,7 +27,8 @@
     "url": "https://github.com/rookie-hhm/rookie-cli/issues"
   },
   "dependencies": {
-    "@rookie-cli/log": "file:../../lib/log",
-    "@rookie-cli/validate-on-error": "file:../../lib/validate-on-error"
-  }
+    "@rookie-cli/log": "^1.1.0",
+    "@rookie-cli/validate-on-error": "^1.1.0"
+  },
+  "gitHead": "348e3106607dd2796a44e5aaf4d6eb2b4d04322a"
 }

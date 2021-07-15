@@ -27,9 +27,10 @@
     "url": "https://github.com/rookie-hhm/rookie-cli/issues"
   },
   "dependencies": {
-    "@rookie-cli/child-process": "file:../../lib/child-process",
-    "@rookie-cli/log": "file:../../lib/log",
-    "@rookie-cli/package": "file:../../models/package",
+    "@rookie-cli/child-process": "^1.1.0",
+    "@rookie-cli/log": "^1.1.0",
+    "@rookie-cli/package": "^1.1.0",
     "userhome": "^1.0.0"
-  }
+  },
+  "gitHead": "348e3106607dd2796a44e5aaf4d6eb2b4d04322a"
 }

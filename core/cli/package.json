@@ -23,10 +23,10 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
-    "@rookie-cli/exec": "file:../exec",
-    "@rookie-cli/init": "file:../../commands/init",
-    "@rookie-cli/log": "file:../../lib/log",
-    "@rookie-cli/npm-info": "file:../../lib/npm-info",
+    "@rookie-cli/exec": "^1.1.0",
+    "@rookie-cli/init": "^1.1.0",
+    "@rookie-cli/log": "^1.1.0",
+    "@rookie-cli/npm-info": "^1.1.0",
     "boxen": "^5.0.1",
     "chalk": "^4.1.1",
     "commander": "^8.0.0",
@@ -40,5 +40,6 @@
   },
   "devDependencies": {
     "path-exists": "^4.0.0"
-  }
+  },
+  "gitHead": "348e3106607dd2796a44e5aaf4d6eb2b4d04322a"
 }

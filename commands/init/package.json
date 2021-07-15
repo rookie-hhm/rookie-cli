@@ -27,12 +27,12 @@
     "url": "https://github.com/rookie-hhm/rookie-cli/issues"
   },
   "dependencies": {
-    "@rookie-cli/child-process": "file:../../lib/child-process",
-    "@rookie-cli/command": "file:../../models/command",
-    "@rookie-cli/log": "file:../../lib/log",
-    "@rookie-cli/package": "file:../../models/package",
-    "@rookie-cli/request": "file:../../lib/request",
-    "@rookie-cli/shared-utils": "file:../../lib/shared-utils",
+    "@rookie-cli/child-process": "^1.1.0",
+    "@rookie-cli/command": "^1.1.0",
+    "@rookie-cli/log": "^1.1.0",
+    "@rookie-cli/package": "^1.1.0",
+    "@rookie-cli/request": "^1.1.0",
+    "@rookie-cli/shared-utils": "^1.1.0",
     "chalk": "^4.1.1",
     "ejs": "^3.1.6",
     "fs-extra": "^10.0.0",
@@ -41,5 +41,6 @@
     "semver": "^7.3.5",
     "userhome": "^1.0.0",
     "validate-npm-package-name": "^3.0.0"
-  }
+  },
+  "gitHead": "348e3106607dd2796a44e5aaf4d6eb2b4d04322a"
 }
