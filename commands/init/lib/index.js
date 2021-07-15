@@ -245,6 +245,7 @@ class InitCommand extends Command {
             if (err) {
               fileReject(err)
             } else {
+              // ejs只是解析出新的模板，不解析原本的文件
               // 写入文件信息
               fs.writeFileSync(filePath, result)
               fileResolve()
