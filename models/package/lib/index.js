@@ -50,7 +50,7 @@ class Package {
     }
   }
   async exists () {
-    // storeDir 存在 利用缓存文件
+    // storeDir 存在 判断缓存路径
     if (this.storeDir) {
       // cache file
       await this.transform()

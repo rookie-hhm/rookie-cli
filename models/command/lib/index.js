@@ -2,7 +2,6 @@
 
 const { ValidationError } = require('@rookie-cli/validate-on-error')
 const log = require('@rookie-cli/log')
-
 class Command {
   constructor (argv) {
     if (!Array.isArray(argv)) {

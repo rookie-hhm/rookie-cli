@@ -6,8 +6,8 @@ const log = require('@rookie-cli/log')
 const Package = require('@rookie-cli/package');
 const { spawnProcess } = require('@rookie-cli/child-process')
 const CMD_MAP = {
-  init: '@rookie-cli/init'
-  // init: 'semver'
+  init: '@rookie-cli/init',
+  publish: '@rookie-cli/publish'
 }
 
 async function exec() {
@@ -70,8 +70,6 @@ async function exec() {
   } catch (err) {
     log.error(err.message)
   }
-  
-  
 }
 
 module.exports = exec

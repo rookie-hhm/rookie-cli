@@ -1,5 +1,4 @@
 #! /usr/bin/env node
-
 const importLocal = require('import-local')
 const log = require('@rookie-cli/log')
 

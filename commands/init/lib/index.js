@@ -16,8 +16,6 @@ const Package = require('@rookie-cli/package')
 const { spinnerStart } = require('@rookie-cli/shared-utils')
 const { getTemplateInfo } = require('./template')
 const log = require('@rookie-cli/log');
-const { rejects } = require('assert');
-
 class InitCommand extends Command {
   async initialize () {
     try {
