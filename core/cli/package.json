@@ -1,6 +1,6 @@
 {
   "name": "@rookie-cli/core",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "cli ",
   "bin": {
     "rookie-cli": "bin/index.js"
@@ -23,10 +23,10 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
-    "@rookie-cli/exec": "^1.1.5",
-    "@rookie-cli/init": "^1.1.6",
-    "@rookie-cli/log": "^1.1.1",
-    "@rookie-cli/npm-info": "^1.1.1",
+    "@rookie-cli/exec": "^1.1.7",
+    "@rookie-cli/init": "^1.1.7",
+    "@rookie-cli/log": "^1.1.7",
+    "@rookie-cli/npm-info": "^1.1.7",
     "boxen": "^5.0.1",
     "chalk": "^4.1.1",
     "commander": "^8.0.0",

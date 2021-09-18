@@ -1,6 +1,6 @@
 {
   "name": "@rookie-cli/command",
-  "version": "1.1.1",
+  "version": "1.1.7",
   "description": "> TODO: description",
   "author": "hhm-lxb <3176152005@qq.com>",
   "homepage": "https://github.com/rookie-hhm/rookie-cli#readme",
@@ -27,8 +27,8 @@
     "url": "https://github.com/rookie-hhm/rookie-cli/issues"
   },
   "dependencies": {
-    "@rookie-cli/log": "^1.1.1",
-    "@rookie-cli/validate-on-error": "^1.1.1"
+    "@rookie-cli/log": "^1.1.7",
+    "@rookie-cli/validate-on-error": "^1.1.7"
   },
   "gitHead": "348e3106607dd2796a44e5aaf4d6eb2b4d04322a"
 }
