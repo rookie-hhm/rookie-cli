@@ -30,7 +30,6 @@ class InitCommand extends Command {
       }
       log.error(err.message)
     }
-    
   }
   execute () {
   }

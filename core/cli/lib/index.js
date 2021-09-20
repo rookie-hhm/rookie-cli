@@ -113,11 +113,19 @@ function registerCommand () {
     // })
     .action(exec)
   
+    // register publish command
+  program
+    .command('publish')
+    .description('publish project')
+    .option('--updatePlatform', 'update git platform')
+    .option('--updateToken', 'update git token')
+    .option('--updateOwner', 'update git owner')
+    .action(exec)
+  
   // you must define listeners before parse args
   program.on('option:debug', (d) => {
     process.env.LOG_LEVEL = 'verbose'
     log.level = process.env.LOG_LEVEL
-    console.log(d, 'd')
     log.verbose('loglevel')
   })
 

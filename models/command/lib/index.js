@@ -21,10 +21,8 @@ class Command {
     })
   }
   runPrepare () {
-    const [commandName, options, cmdObj] = this._argv
-    this.commandName = commandName
-    this.options = options
-    this.cmdObj = cmdObj
+    this.options = this._argv[this._argv.length - 2]
+    this.cmdObj = this._argv[this._argv.length - 1]
   }
   runCommand() {
     return Promise.resolve()
@@ -33,11 +31,11 @@ class Command {
   }
 
   initialize() {
-    throw new ValidationError(this.commandName, "initialize() needs to be implemented.");
+    throw new ValidationError(this.cmdObj._name, "initialize() needs to be implemented.");
   }
 
   execute() {
-    throw new ValidationError(this.commandName, "execute() needs to be implemented.");
+    throw new ValidationError(this.cmdObj._name, "execute() needs to be implemented.");
   }
 }
 

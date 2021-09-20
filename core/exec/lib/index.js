@@ -52,7 +52,9 @@ async function exec() {
         cmdObj[key] = cmd[key]
       }
     }
+    
     args[args.length - 1] = cmdObj
+    console.log(args, 'args')
     const executeCode = `require('${execFilePath}').call(null, ${JSON.stringify(args)})`
     const child = spawnProcess('node', ['-e', executeCode], {
       stdio: 'inherit',
