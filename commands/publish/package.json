@@ -1,6 +1,6 @@
 {
   "name": "@rookie-cli/publish",
-  "version": "1.0.0",
+  "version": "1.1.8",
   "description": "> TODO: description",
   "author": "rookie-hhm <3176152005@qq.com>",
   "homepage": "https://github.com/rookie-hhm/rookie-cli#readme",
@@ -27,8 +27,8 @@
     "url": "https://github.com/rookie-hhm/rookie-cli/issues"
   },
   "dependencies": {
-    "@rookie-cli/git": "file:../../models/git",
     "@rookie-cli/command": "file:../../models/command",
+    "@rookie-cli/git": "file:../../models/git",
     "@rookie-cli/log": "file:../../lib/log",
     "chalk": "^4.1.2",
     "fs-extra": "^10.0.0"

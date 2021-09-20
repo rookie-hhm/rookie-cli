@@ -1,6 +1,6 @@
 {
   "name": "@rookie-cli/package",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "npm package model",
   "author": "hhm-lxb <3176152005@qq.com>",
   "homepage": "https://github.com/rookie-hhm/rookie-cli#readme",
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@rookie-cli/npm-info": "^1.1.7",
-    "@rookie-cli/shared-utils": "^1.1.7",
+    "@rookie-cli/shared-utils": "^1.1.8",
     "fs-extra": "^10.0.0",
     "npminstall": "^4.11.0",
     "path-exists": "^4.0.0",
