@@ -1,6 +1,6 @@
 {
-  "name": "@rookie-cli/git",
-  "version": "1.1.8",
+  "name": "@rookie-cli/cloudbuild",
+  "version": "1.0.0",
   "description": "> TODO: description",
   "author": "rookie-hhm <3176152005@qq.com>",
   "homepage": "https://github.com/rookie-hhm/rookie-cli#readme",
@@ -28,16 +28,6 @@
   },
   "dependencies": {
     "@rookie-cli/log": "file:../../lib/log",
-    "@rookie-cli/shared-utils": "file:../../lib/shared-utils",
-    "@rookie-cli/validate-on-error": "file:../../lib/validate-on-error",
-    "@rookie-cli/cloudbuild": "file:../cloudbuild",
-    "axios": "^0.21.4",
-    "chalk": "^4.1.2",
-    "fs-extra": "^10.0.0",
-    "inquirer": "^8.1.5",
-    "semver": "^7.3.5",
-    "simple-git": "^2.45.1",
-    "terminal-link": "^2.1.1",
-    "userhome": "^1.0.0"
+    "socket.io-client": "^4.2.0"
   }
 }

@@ -120,6 +120,7 @@ function registerCommand () {
     .option('--updatePlatform', 'update git platform')
     .option('--updateToken', 'update git token')
     .option('--updateOwner', 'update git owner')
+    .option('-b --buildCommand <buildCommand>', 'cloud build command', 'npm run build')
     .action(exec)
   
   // you must define listeners before parse args

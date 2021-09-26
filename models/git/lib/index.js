@@ -1,10 +1,11 @@
-'use strict';
+// 'use strict';
 
 const fse = require('fs-extra')
 const inquirer = require('inquirer')
 const semver = require("semver")
 const simpleGit = require('simple-git')
 const log = require('@rookie-cli/log')
+const CloudBuild = require('@rookie-cli/cloudbuild')
 const { readFile, writeFile, parseFile, replaceFieldFile } = require('@rookie-cli/shared-utils')
 const userhome = require('userhome')
 const terminalLink = require('terminal-link')
@@ -43,18 +44,26 @@ class Git {
     this.gitCacheFile = null // git缓存配置文件路径
     this.gitCacheFileContent = null // git缓存配置文件内容
     this.cliHomePath = path.resolve(userhome(), process.env.CLI_HOME)
+    this.remoteRepoUrl = null // 远程仓库地址
     this.branch = null // 本地开发分支
+    this.buildCommand = 'npm run build' // 云构建命令
   }
   async init () {
     try {
       await this.prepare()
       await this.gitInit()
       await this.toCommit()
+      await this.publish()
     } catch (err) {
+      console.log(err)
       if (process.env.LOG_LEVEL === 'verbose') {
         log.verbose(err)
       }
-      log.error(err.message)
+      if (err && err.message) {
+        log.error(err.message)
+      }
+      
+      // process.exit(1)
     }
   }
   async prepare () {
@@ -192,8 +201,11 @@ class Git {
     }
   }
   async createRepository () {
+    // 后续改进， 先判断git remote -v 是否有值， 如果有通过search Api进行查询，判断是否存在此仓库，如果存在则直接返回，而不需要创建新仓库
+    // 如果不存在仓库则进行创建
     let repo = await this.gitServer.getRepository(this.gitConfig.GIT_USER_NAME, this.name)
-    log.verbose(typeof repo, 'repo')
+    repo = this.gitServer.getRemoteUrl(this.gitConfig.GIT_USER_NAME, this.name)
+    log.verbose(typeof repo, 'repo', repo)
     log.verbose('GIT_OWNER', this.gitConfig.GIT_OWNER)
     if (!repo) {
       if (this.gitConfig.GIT_OWNER === 'USER') {
@@ -206,7 +218,7 @@ class Git {
       }
       log.success('create repo successfully')
     } else {
-      log.success('get repo info successfully')
+      log.success('get repo info successfully', repo)
     }
     log.verbose('repo', repo)
     this.remoteRepoUrl = repo
@@ -335,7 +347,7 @@ class Git {
     // 检查提交
     await this.checkCommitted()
     // 合并远程开发分支
-    await this.pullOriginBranch()
+    await this.pullOriginBranch(this.branch)
     // 推送开发分支
     this.pushRemote(this.branch)
     log.info(`push origin ${this.branch} successfully`)
@@ -402,7 +414,7 @@ class Git {
     const localBranchs = await this.git.branchLocal()
     log.info(localBranchs.all)
     if (localBranchs.all.includes(branch)) {
-      log.info('切换本地分支')
+      log.info(`checkout local branch ${chalk.bold.red(branch)}`)
       await this.git.checkout(branch)
     } else {
       log.info('切换远程分支')
@@ -423,6 +435,24 @@ class Git {
       log.info(`pull origin ${branch} successfully`)
       await this.checkConflict()
     }
+  }
+  async publish () {
+    await this.checkPublish()
+    const cloudBuild = new CloudBuild(this, {
+      buildCommand: this.buildCommand
+    })
+    await cloudBuild.connect()
+    await cloudBuild.build()
+  }
+  async checkPublish () {
+    // just npm/ cnpm run scripts
+    const { buildCommand = 'npm run build' } = this.cmdInfo.options
+    const cmdArr = buildCommand.split(' ')
+    const mainCmd = cmdArr[0]
+    if (mainCmd !== 'npm' && mainCmd !== 'cnpm') {
+      throw new Error('buildcommand must begin with npm/cnpm')
+    }
+    this.buildCommand = buildCommand
   }
 }
 

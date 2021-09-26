@@ -33,7 +33,11 @@ class Gitte extends GitServer {
     // errorMessage('', 'getOrgInfo')
   }
   getRepository (username, repoName) {
-    return this.request.get(`/repos/${username}/${repoName}`)
+    return this.request.get(`/repos/${username}/${repoName}`, {
+      params: {
+        'access_token': this.token
+      }
+    })
   }
   createUserRepository (repoName) {
     return this.request.post(`/user/repos`, {

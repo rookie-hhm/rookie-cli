@@ -4,7 +4,7 @@ const path = require('path')
 const userHome = require('userhome')
 const log = require('@rookie-cli/log')
 const Package = require('@rookie-cli/package');
-const { spawnProcess } = require('@rookie-cli/child-process')
+const { spawnProcess } = require('@rookie-cli/child-process');
 const CMD_MAP = {
   init: '@rookie-cli/init',
   publish: '@rookie-cli/publish'
@@ -52,9 +52,7 @@ async function exec() {
         cmdObj[key] = cmd[key]
       }
     }
-    
     args[args.length - 1] = cmdObj
-    console.log(args, 'args')
     const executeCode = `require('${execFilePath}').call(null, ${JSON.stringify(args)})`
     const child = spawnProcess('node', ['-e', executeCode], {
       stdio: 'inherit',
@@ -65,7 +63,7 @@ async function exec() {
       process.exitCode = 1
     })
     child.on('exit', (code, signal) => {
-      log.success('command is executed successfully')
+      log.success('process exit')
       process.exitCode = code
     })
     // require(execFilePath).apply(null, arguments)
@@ -73,5 +71,4 @@ async function exec() {
     log.error(err.message)
   }
 }
-
 module.exports = exec
