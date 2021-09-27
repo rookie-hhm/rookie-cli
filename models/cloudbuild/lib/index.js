@@ -74,7 +74,11 @@ class CloudBuild {
       })
       // finished
       this.socket.on('builded', () => {
-        log.info('builded')
+        log.info('Cloud build finised')
+      })
+      // 发布完成
+      this.socket.on('published', message => {
+        log.info(message)
         this.disconnect()
         resolve()
       })
