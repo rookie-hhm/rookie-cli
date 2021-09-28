@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@rookie-cli/npm-info": "^1.1.7",
-    "@rookie-cli/shared-utils": "^1.1.8",
+    "@rookie-cli/shared-utils": "file:../../lib/shared-utils",
     "fs-extra": "^10.0.0",
     "npminstall": "^4.11.0",
     "path-exists": "^4.0.0",

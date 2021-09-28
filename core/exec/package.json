@@ -29,7 +29,7 @@
   "dependencies": {
     "@rookie-cli/child-process": "^1.1.7",
     "@rookie-cli/log": "^1.1.7",
-    "@rookie-cli/package": "^1.1.8",
+    "@rookie-cli/package": "file:../../models/package",
     "userhome": "^1.0.0"
   },
   "gitHead": "d9efd210cf14f4407c202fc71a1c7d74eb3cef42"

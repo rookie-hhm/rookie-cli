@@ -29,6 +29,7 @@
   "dependencies": {
     "@rookie-cli/cloudbuild": "file:../cloudbuild",
     "@rookie-cli/log": "file:../../lib/log",
+    "@rookie-cli/request": "file:../../lib/request",
     "@rookie-cli/shared-utils": "file:../../lib/shared-utils",
     "@rookie-cli/validate-on-error": "file:../../lib/validate-on-error",
     "axios": "^0.21.4",

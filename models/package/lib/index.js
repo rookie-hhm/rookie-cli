@@ -4,7 +4,7 @@ const pkgDir = require('pkg-dir').sync
 const pathExists = require('path-exists').sync
 const fse = require("fs-extra")
 const npminstall = require("npminstall")
-const { isPlainObject } = require('@rookie-cli/shared-utils')
+const { isPlainObject, normalizeSeperator } = require('@rookie-cli/shared-utils')
 const { getDefaultRegistry, getNpmLatestVersion } = require('@rookie-cli/npm-info')
 class Package {
   constructor (options) {
@@ -33,7 +33,8 @@ class Package {
       return null
     }
     const targetPath = this.storeDir ? this.getSpecifiedCachePath(this.version) : this.targetPath
-    return _getEntryFilePath(targetPath)
+    const entryFilePath = normalizeSeperator(targetPath)
+    return entryFilePath
   }
   getSpecifiedCachePath (version) {
     return path.resolve(this.storeDir, `_${this.cacheDirPrefix}@${version}@${this.name}`)

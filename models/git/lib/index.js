@@ -12,6 +12,7 @@ const terminalLink = require('terminal-link')
 const chalk = require('chalk')
 const path = require('path')
 const fs = require('fs')
+const request = require('@rookie-cli/request')
 const Github = require('./git-server/Github')
 const Gitee = require('./git-server/Gitee');
 
@@ -205,7 +206,6 @@ class Git {
     // 如果不存在仓库则进行创建
     let repo = await this.gitServer.getRepository(this.gitConfig.GIT_USER_NAME, this.name)
     repo = this.gitServer.getRemoteUrl(this.gitConfig.GIT_USER_NAME, this.name)
-    log.verbose(typeof repo, 'repo', repo)
     log.verbose('GIT_OWNER', this.gitConfig.GIT_OWNER)
     if (!repo) {
       if (this.gitConfig.GIT_OWNER === 'USER') {
@@ -329,8 +329,8 @@ class Git {
       ...options
     })
   }
-  async pushRemote (branch) {
-    await this.git.push('origin', branch)
+  async pushRemote (branch, options = {}) {
+    await this.git.push('origin', branch, options)
   }
   async toCommit () {
     // 获取远程release分支的列表
@@ -352,7 +352,7 @@ class Git {
     this.pushRemote(this.branch)
     log.info(`push origin ${this.branch} successfully`)
   }
-  async getRemoteList (type) {
+  async getRemoteList (type) { // 获取远程分支类别列表
     const lsRemoteRes = await this.git.listRemote(['--refs'])
     const result = []
     const matchType= type === 'release' ? RELEASE_MATCH : DEV_MATCH
@@ -428,7 +428,6 @@ class Git {
     log.info('pull origin master successfully')
     await this.checkConflict()
     const remoteList = await this.getRemoteList('dev')
-    log.info(typeof remoteList, remoteList, 'pullorigin')
     if (remoteList.includes(this.version)) {
       log.info(`pull origin ${branch}...`)
       await this.pullRemote('master')
@@ -437,14 +436,16 @@ class Git {
     }
   }
   async publish () {
-    await this.checkPublish()
+    await this.checkBuildCmd()
+    await this.prePublish()
     const cloudBuild = new CloudBuild(this, {
       buildCommand: this.buildCommand
     })
     await cloudBuild.connect()
     await cloudBuild.build()
+    await this.postPublish()
   }
-  async checkPublish () {
+  async checkBuildCmd () {
     // just npm/ cnpm run scripts
     const { buildCommand = 'npm run build' } = this.cmdInfo.options
     const cmdArr = buildCommand.split(' ')
@@ -453,6 +454,66 @@ class Git {
       throw new Error('buildcommand must begin with npm/cnpm')
     }
     this.buildCommand = buildCommand
+  }
+  async prePublish () { // 检测远端项目是否已经存在
+    const projectName = `${this.name}@${this.version}/`
+    const list = await request.get('/oss', {
+      params: {
+        prefix: projectName
+      }
+    })
+    if (list && list.length) {
+      const { isContinue } = await inquirer.prompt({
+        type: 'confirm',
+        name: 'isContinue',
+        message: `${this.name}@${this.version} project already exists, whether to publish`,
+        default: false
+      })
+      log.info(`isContinue:${isContinue}`)
+      if (!isContinue) {
+        throw new Error('Manually terminate publish flow')
+      }
+    }
+  }
+  async postPublish () {
+    // add tag
+    await this.addTag()
+    // checkout to master
+    log.info('checkout to master')
+    await this.checkoutBranch('master')
+    // merge dev branch to master
+    log.info(`merge ${this.branch} to master...`)
+    await this.mergeBranch(this.branch, 'master')
+    log.info(`merge ${this.branch} to master successfully`)
+    // delete local dev branch
+    log.info(`delete local ${this.branch}...`)
+    await this.git.deleteLocalBranch(this.branch)
+    log.info(`delete local ${this.branch} successfully`)
+    // delete remote dev branch
+    log.info(`delete remote ${this.branch}...`)
+    await this.git.push('origin', this.branch, ['--delete'])
+    log.info(`delete remote ${this.branch} successfully`)
+    // push master to remote origin
+    await this.pushRemote('master')
+    log.info(`push master to origin successfully`)
+  }
+  async addTag () {
+    // 删除已有tag，并重新新建tag 推送远端
+    const remoteTagVersionList = await this.getRemoteList('release')
+    const targetTag = `${RELEASE_BRANCH_PREFIX}/${this.version}`
+    if (remoteTagVersionList && remoteTagVersionList.length && remoteTagVersionList.includes(this.version)) { // 判断远程tag是否存在当前版本的tag
+      await this.pushRemote(`:refs/tags/${targetTag}`) // 推送空分支 删除远程tag
+    }
+    const localTagList = await this.git.tags()
+    if (localTagList && localTagList.length && localTagList.includes(targetTag)) {
+      await this.git.tag(['-d', targetTag])
+    }
+    await this.git.addTag(targetTag)
+    await this.pushRemote(targetTag)
+    log.info('add tag to remote successfully')
+  }
+  async mergeBranch (origin, destination) {
+    await this.git.mergeFromTo(origin, destination)
   }
 }
 
