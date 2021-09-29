@@ -32,7 +32,6 @@ class PublishCommand extends Command {
     }
     // check required arguments
     const { name, version, scripts } = fse.readJSONSync(pkgPath)
-    console.log(name, version, scripts)
     if (!name || !version || !scripts || !scripts.build) {
       throw new Error(`Missing ${chalk.bold.red('name or version or scripts(include build command) field')} in package.json`)
     }

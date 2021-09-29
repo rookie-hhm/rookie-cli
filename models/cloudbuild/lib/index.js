@@ -17,7 +17,6 @@ class CloudBuild {
   connect () {
     const { name, version, remoteRepoUrl, branch } = this.git
     const { buildCommand } = this.options
-    console.log('start connect')
     return new Promise((resolve, reject) => {
       this.socket = io(`${PROTOCOL}://${CONNECT_HOST_NAME}:${PORT}`, {   
         query: {

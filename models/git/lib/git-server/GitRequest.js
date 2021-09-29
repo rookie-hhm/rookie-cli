@@ -11,9 +11,7 @@ function createAxiosInstance ({ baseURL }) {
     }, error => {
       const response = error && error.response
       if (response && response.data) {
-        console.log(response, response.status, 'error')
         if (response.status === 404) {
-          console.log('return')
           return null
         }
       }

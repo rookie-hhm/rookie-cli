@@ -32,7 +32,7 @@ class Package {
       }
       return null
     }
-    const targetPath = this.storeDir ? this.getSpecifiedCachePath(this.version) : this.targetPath
+    const targetPath = this.storeDir ? this.getSpecifiedCachePath(this.version) : _getEntryFilePath(this.targetPath)
     const entryFilePath = normalizeSeperator(targetPath)
     return entryFilePath
   }

@@ -56,15 +56,13 @@ class Git {
       await this.toCommit()
       await this.publish()
     } catch (err) {
-      console.log(err)
       if (process.env.LOG_LEVEL === 'verbose') {
         log.verbose(err)
+      } else {
+        if (err && err.message) {
+          log.error(err.message)
+        }
       }
-      if (err && err.message) {
-        log.error(err.message)
-      }
-      
-      // process.exit(1)
     }
   }
   async prepare () {
@@ -104,17 +102,15 @@ class Git {
         }
       ]))
       if (GIT_PLATFORM) {
-        log.notice('has platform')
         const newContent = replaceFieldFile(this.gitCacheFileContent, 'GIT_PLATFORM', platform)
         this._writeGitConfig(newContent, true)
       } else {
-        log.notice('!has platform')
         this._writeGitConfig(`GIT_PLATFORM=${platform}\n`)
       }
       // 重新写入并读取
       this.gitConfig.GIT_PLATFORM = platform
     } else {
-      console.log(GIT_PLATFORM, '读取成功')
+      log.success(GIT_PLATFORM, '读取成功')
     }
   }
   createGitServer () {
@@ -205,22 +201,20 @@ class Git {
     // 后续改进， 先判断git remote -v 是否有值， 如果有通过search Api进行查询，判断是否存在此仓库，如果存在则直接返回，而不需要创建新仓库
     // 如果不存在仓库则进行创建
     let repo = await this.gitServer.getRepository(this.gitConfig.GIT_USER_NAME, this.name)
-    repo = this.gitServer.getRemoteUrl(this.gitConfig.GIT_USER_NAME, this.name)
-    log.verbose('GIT_OWNER', this.gitConfig.GIT_OWNER)
     if (!repo) {
       if (this.gitConfig.GIT_OWNER === 'USER') {
         repo = await this.gitServer.createUserRepository(this.name)
       } else {
-        repo =  await this.gitServer.createOrgRepository(this.gitConfig.GIT_USER_NAME, this.name)
+        repo = await this.gitServer.createOrgRepository(this.gitConfig.GIT_USER_NAME, this.name)
       }
       if (!repo) {
         throw new Error('cer')
       }
       log.success('create repo successfully')
     } else {
-      log.success('get repo info successfully', repo)
+      log.success('get repo info successfully')
     }
-    log.verbose('repo', repo)
+    repo = this.gitServer.getRemoteUrl(this.gitConfig.GIT_USER_NAME, this.name)
     this.remoteRepoUrl = repo
   }
   _writeGitConfig (data, isAll = false) {
@@ -250,7 +244,7 @@ class Git {
     const { GIT_USER_NAME } = this.gitConfig
     const gitDirPath = path.resolve(process.cwd(), '.git')
     if (!fs.existsSync(gitDirPath)) { // 不能存在.git目录进行初始化
-      await this.git.init()
+      await this.git.init(process.cwd())  
     }
     const remoteList = await this.git.getRemotes()
     // const result = await this.git.remote(['-v'])
@@ -266,9 +260,8 @@ class Git {
     // check workspace is clean
     await this.checkWorkSpace()
     // checkout master branch
-    if (this.checkMasterExists()) {
+    if (await this.checkMasterExists()) {
       await this.pullRemote('master')
-      log.success('pull origin master')
     } else {
       await this.git.push('origin', 'master')
       log.success('push origin master')
@@ -321,7 +314,7 @@ class Git {
   }
   async checkMasterExists () {
     const str = await (this.git.listRemote(['--refs']))
-    return str.indexOf('refs/heads/master') !== -1
+    return str ? str.indexOf('refs/heads/master') !== -1 : false
   }
   async pullRemote (branch, options = {}) {
     await this.git.pull('origin', branch, {
@@ -412,12 +405,10 @@ class Git {
   async checkoutBranch (branch) {
     // check local branch is exists
     const localBranchs = await this.git.branchLocal()
-    log.info(localBranchs.all)
     if (localBranchs.all.includes(branch)) {
       log.info(`checkout local branch ${chalk.bold.red(branch)}`)
       await this.git.checkout(branch)
     } else {
-      log.info('切换远程分支')
       await this.git.checkoutLocalBranch(branch)
     }
   }
@@ -469,7 +460,6 @@ class Git {
         message: `${this.name}@${this.version} project already exists, whether to publish`,
         default: false
       })
-      log.info(`isContinue:${isContinue}`)
       if (!isContinue) {
         throw new Error('Manually terminate publish flow')
       }
@@ -505,7 +495,7 @@ class Git {
       await this.pushRemote(`:refs/tags/${targetTag}`) // 推送空分支 删除远程tag
     }
     const localTagList = await this.git.tags()
-    if (localTagList && localTagList.length && localTagList.includes(targetTag)) {
+    if (localTagList.all && localTagList.all.length && localTagList.all.includes(targetTag)) {
       await this.git.tag(['-d', targetTag])
     }
     await this.git.addTag(targetTag)
