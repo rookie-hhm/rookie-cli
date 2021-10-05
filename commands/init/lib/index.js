@@ -41,6 +41,7 @@ class InitCommand extends Command {
     }
     if (ifContinue) {
       this.templateInfo = await this.getTemplateInfo()
+      log.verbose(this.templateInfo, 'this.templateInfo')
     }
     return this.templateInfo
   }
@@ -92,6 +93,7 @@ class InitCommand extends Command {
         ]
       }
     ])
+    this.initializationType = initializationType
     // get remoteTemplateInfo
     if (initializationType === 'project') {
       this.remoteTemplateInfo = await getTemplateInfo('project')
@@ -179,6 +181,8 @@ class InitCommand extends Command {
     const { npmName, version } = npmInfo
     const pkgTargetPath = path.join(userHome(), process.env.CLI_HOME, 'template')
     const pkgStoreDir = path.join(pkgTargetPath, 'node_modules')
+    // if initializationType is component, generate config file
+
     const templatePkg = new Package({
       targetPath: pkgTargetPath,
       storeDir: pkgStoreDir,
@@ -215,13 +219,18 @@ class InitCommand extends Command {
     const srcPath = path.resolve(this.templatePkg.getCacheFilePath(), 'template')
     log.verbose(srcPath, destination)
     fse.copySync(srcPath, destination)
+    if (this.initializationType === 'component') {
+      const configFile = path.resolve(destination, '.componentrc')
+      fse.writeJsonSync(configFile, this.templateInfo, { spaces: 2 })
+    }
     // // ejs dynamic render template
     await this.renderTemplate()
     // execute config command
     const { npmInfo } = this.templateInfo
-    const { startCmd, installCmd } = npmInfo
-    await this.execCommand(installCmd)
-    await this.execCommand(startCmd)
+    const { startCmd, installCmd, buildCmd } = npmInfo
+    installCmd && await this.execCommand(installCmd)
+    startCmd && await this.execCommand(startCmd)
+    buildCmd && await this.execCommand(buildCmd)
   }
   async renderTemplate () {
     const destination = process.cwd()
@@ -231,7 +240,7 @@ class InitCommand extends Command {
     const fileList = glob.sync('**', {
       cwd: destination,
       nodir: true,
-      ignore: npmInfo.ignore || ['public/**']
+      ignore: npmInfo.ignore || ['**/node_modules/**', 'public/**', '**/examples/public/**']
     })
     log.verbose(fileList, localPath)
     log.verbose(npmInfo, baseInfo)

@@ -68,6 +68,7 @@ class CloudBuild {
       this.socket.on('build', message => {
         log.info(message)
       })
+      // building...
       this.socket.on('building', message => {
         log.info(message)
       })

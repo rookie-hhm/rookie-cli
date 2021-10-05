@@ -34,6 +34,7 @@ const RELEASE_BRANCH_PREFIX = 'release' // 发布分支的前缀
 class Git {
   constructor (info, cmdInfo) {
     const { name, version, scripts, dir } = info
+    this.isComponent = fs.existsSync(path.resolve(process.cwd(), '.componentrc')) // 如果存在组件配置文件，则默认是组件发布
     this.git = simpleGit({ baseDir: process.cwd() })
     this.name = name
     this.dir = dir
@@ -48,13 +49,16 @@ class Git {
     this.remoteRepoUrl = null // 远程仓库地址
     this.branch = null // 本地开发分支
     this.buildCommand = 'npm run build' // 云构建命令
+    if (this.isComponent) {
+      this.name = `rookie-cli-component_${this.name}`
+    }
   }
   async init () {
     try {
       await this.prepare()
       await this.gitInit()
       await this.toCommit()
-      await this.publish()
+      // await this.publish()
     } catch (err) {
       if (process.env.LOG_LEVEL === 'verbose') {
         log.verbose(err)
@@ -391,7 +395,6 @@ class Git {
         // write to package.json
         const pkgPath = `${this.dir}/package.json`
         const json = fse.readJSONSync(pkgPath)
-        console.log(json, 'json')
         if (json && json.version) {
           json.version = version 
           fse.writeJSONSync(pkgPath, json, { spaces: 2, encoding: 'utf-8' })
@@ -399,7 +402,7 @@ class Git {
         }
       }
     }
-    console.log(branch, 'branch')
+    log.verbose(`branch:${branch}`)
     return branch
   }
   async checkoutBranch (branch) {
