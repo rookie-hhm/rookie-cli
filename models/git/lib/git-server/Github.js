@@ -14,6 +14,9 @@ class Github extends GitServer {
     // https://github.com/rookie-cli-org/test-one
     return `git@github.com:${username}/${repoName}.git`
   }
+  getHttpRemoteUlr (username, repoName) {
+    return `https://github.com/${username}/${repoName}`
+  }
   setToken (token) {
     this.token = token
     console.log(this.token, 'github')

@@ -28,6 +28,7 @@ class InitCommand extends Command {
       if (process.env.LOG_LEVEL === 'verbose') {
         log.verbose(err)
       }
+      console.log(err)
       log.error(err.message)
     }
   }
@@ -170,7 +171,7 @@ class InitCommand extends Command {
   createRemoteTemplateList () {
     return this.remoteTemplateInfo.map(item => {
       return {
-        name: item.description,
+        name: item.npmDescription,
         value: item
       }
     })
@@ -178,7 +179,7 @@ class InitCommand extends Command {
   async downloadTemplate () {
     // project
     const { npmInfo } = this.templateInfo
-    const { npmName, version } = npmInfo
+    const { npmName, npmVersion } = npmInfo
     const pkgTargetPath = path.join(userHome(), process.env.CLI_HOME, 'template')
     const pkgStoreDir = path.join(pkgTargetPath, 'node_modules')
     // if initializationType is component, generate config file
@@ -187,7 +188,7 @@ class InitCommand extends Command {
       targetPath: pkgTargetPath,
       storeDir: pkgStoreDir,
       name: npmName,
-      version
+      version: npmVersion
     })
     if (!await templatePkg.exists()) {
       const spinner = spinnerStart('downloading template...')
@@ -235,21 +236,19 @@ class InitCommand extends Command {
   async renderTemplate () {
     const destination = process.cwd()
     const { npmInfo, baseInfo } = this.templateInfo
-    const localPath = process.cwd()
-    log.verbose(npmInfo.ignore, 'ignore')
+    log.verbose(npmInfo.ignore, 'ignore', typeof npmInfo.ignore)
     const fileList = glob.sync('**', {
       cwd: destination,
       nodir: true,
       ignore: npmInfo.ignore || ['**/node_modules/**', 'public/**', '**/examples/public/**']
     })
-    log.verbose(fileList, localPath)
-    log.verbose(npmInfo, baseInfo)
     return new Promise((resolve, reject) => {
       Promise.all(fileList.map(file => {
         const filePath = path.join(destination, file)
         return new Promise((fileResolve, fileReject) => {
           ejs.renderFile(filePath, baseInfo, {}, (err, result) => {
             if (err) {
+              console.log('filereject', err)
               fileReject(err)
             } else {
               // ejs只是解析出新的模板，不解析原本的文件

@@ -11,6 +11,7 @@ const userhome = require('userhome')
 const terminalLink = require('terminal-link')
 const chalk = require('chalk')
 const path = require('path')
+const { execSync } = require('child_process')
 const fs = require('fs')
 const request = require('@rookie-cli/request')
 const Github = require('./git-server/Github')
@@ -58,7 +59,7 @@ class Git {
       await this.prepare()
       await this.gitInit()
       await this.toCommit()
-      // await this.publish()
+      await this.publish()
     } catch (err) {
       if (process.env.LOG_LEVEL === 'verbose') {
         log.verbose(err)
@@ -430,13 +431,20 @@ class Git {
     }
   }
   async publish () {
-    await this.checkBuildCmd()
-    await this.prePublish()
-    const cloudBuild = new CloudBuild(this, {
-      buildCommand: this.buildCommand
-    })
-    await cloudBuild.connect()
-    await cloudBuild.build()
+    if (this.isComponent) { // if component publish, execute npm publish
+      execSync('npm publish', {
+        cwd: process.cwd(),
+        stdio: 'inherit'
+      })
+    } else {
+      await this.checkBuildCmd()
+      await this.prePublish()
+      const cloudBuild = new CloudBuild(this, {
+        buildCommand: this.buildCommand
+      })
+      await cloudBuild.connect()
+      await cloudBuild.build()
+    }
     await this.postPublish()
   }
   async checkBuildCmd () {
@@ -489,6 +497,8 @@ class Git {
     // push master to remote origin
     await this.pushRemote('master')
     log.info(`push master to origin successfully`)
+    // notice remote url
+    log.info(`${terminalLink(`${chalk.bold.blueBright('Jump to repository url')}`, this.gitServer.getHttpRemoteUrl(this.gitConfig.GIT_USER_NAME, this.name))}`)
   }
   async addTag () {
     // 删除已有tag，并重新新建tag 推送远端

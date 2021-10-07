@@ -9,6 +9,9 @@ class Gitte extends GitServer {
     // https://gitee.com/rookie-cli-org/test-one
     return `git@gitee.com:${username}/${repoName}.git`
   }
+  getHttpRemoteUrl (username, repoName) {
+    return `https://gitee.com/${username}/${repoName}`
+  }
   setToken (token) {
     this.token = token
     console.log(token, 'gitee token')
