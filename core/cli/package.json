@@ -1,6 +1,6 @@
 {
   "name": "@rookie-cli/core",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "cli ",
   "bin": {
     "rookie-cli": "bin/index.js"
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@rookie-cli/exec": "file:../exec",
-    "@rookie-cli/init": "^1.2.2",
+    "@rookie-cli/init": "^1.2.3",
     "@rookie-cli/log": "^1.1.7",
     "@rookie-cli/npm-info": "^1.1.7",
     "boxen": "^5.0.1",
