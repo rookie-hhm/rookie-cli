@@ -1,11 +1,17 @@
 ### rookie-cli 简介
 轻量脚手架，目前支持快速创建项目、创建远程仓库、构建及发布项目功能。
 
-### 使用方法
+### 安装方法
 ```
 npm i @rookie-cli/cli
 cnpm i @rookie-cli/cli
 ```
+
+### 使用方法
+```
+rookie-cli init
+```
+通过`--help`查看支持的命令及参数
 
 ### 支持命令
 `init` 快速创建模板项目。
@@ -40,4 +46,3 @@ cnpm i @rookie-cli/cli
 ### 后续跟进
  - [ ] 使用ts重构
  - [ ] 优化构建流程交互
- - [ ] 快速创建组件
