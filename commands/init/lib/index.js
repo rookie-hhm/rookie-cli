@@ -27,8 +27,8 @@ class InitCommand extends Command {
     } catch (err) {
       if (process.env.LOG_LEVEL === 'verbose') {
         log.verbose(err)
+        console.log(err)
       }
-      console.log(err)
       log.error(err.message)
     }
   }
@@ -248,7 +248,6 @@ class InitCommand extends Command {
         return new Promise((fileResolve, fileReject) => {
           ejs.renderFile(filePath, baseInfo, {}, (err, result) => {
             if (err) {
-              console.log('filereject', err)
               fileReject(err)
             } else {
               // ejs只是解析出新的模板，不解析原本的文件

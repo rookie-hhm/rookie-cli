@@ -432,6 +432,8 @@ class Git {
   }
   async publish () {
     if (this.isComponent) { // if component publish, execute npm publish
+      // put component information
+      // await this.uploadComponentInfo()
       execSync('npm publish', {
         cwd: process.cwd(),
         stdio: 'inherit'

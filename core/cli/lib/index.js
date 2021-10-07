@@ -108,12 +108,9 @@ function registerCommand () {
     .alias('i')
     .description('initialize project')
     .option('-f --force', 'whether to force initialization')
-    // .action((name, options, cmd) => {
-    //   log.verbose(name, options, cmd._name)
-    // })
     .action(exec)
   
-    // register publish command
+  // register publish command
   program
     .command('publish')
     .description('publish project')

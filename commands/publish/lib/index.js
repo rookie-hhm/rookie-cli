@@ -19,6 +19,7 @@ class PublishCommand extends Command {
     } catch (err) {
       if (process.env.LOG_LEVEL === 'verbose') {
         log.verbose(err)
+        console.log(err)
       }
       log.error(err.message)
     }
